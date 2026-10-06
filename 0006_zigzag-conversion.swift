@@ -1,7 +1,7 @@
 /*
 See https://leetcode.com/problems/zigzag-conversion/
 
-Zigzag Conversion
+6. Zigzag Conversion
 
 The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this:
     P   A   H   N
@@ -48,7 +48,7 @@ class Solution {
         for i in stride(from: 0, to: n, by: 2 * (rowsCount - 1)) {
             result.append(String(characters[i]))
         }
-        for j in 1...(rowsCount - 2) {
+        for j in 1 ... rowsCount - 2 {
             var i = 0
             while true {
                 let k1 = i * 2 * (rowsCount - 1) + j

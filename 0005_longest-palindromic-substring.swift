@@ -1,7 +1,7 @@
 /*
 See https://leetcode.com/problems/longest-palindromic-substring/
 
-Longest Palindromic Substring
+5. Longest Palindromic Substring
 
 Given a string s, return the longest palindromic substring in s.
 
@@ -56,7 +56,7 @@ class Solution {
         _ string: String
     ) -> String {
         let characters = Array<Character>(string)
-        var palindromeIndices = Array(0..<characters.count)
+        var palindromeIndices = Array(0 ..< characters.count)
         guard !palindromeIndices.isEmpty else {
             return ""
         }
@@ -65,9 +65,9 @@ class Solution {
         while !palindromeIndices.isEmpty {
             let from = palindromeIndices[0] - indexDiff
             let to = palindromeIndices[0] + indexDiff + 1
-            longestPalindrome = Array(characters[from..<to])
+            longestPalindrome = Array(characters[from ..< to])
             indexDiff += 1
-            for k in (0..<palindromeIndices.count).reversed() {
+            for k in (0 ..< palindromeIndices.count).reversed() {
                 let centerIndex = palindromeIndices[k]
                 if (
                     centerIndex - indexDiff < 0 ||
@@ -86,7 +86,7 @@ class Solution {
     ) -> String {
         let characters = Array<Character>(string)
         var palindromeIndices = Array(
-            (1..<characters.count).filter { characters[$0 - 1] == characters[$0] }
+            (1 ..< characters.count).filter { characters[$0 - 1] == characters[$0] }
         )
         guard !palindromeIndices.isEmpty else {
             return ""
@@ -96,9 +96,9 @@ class Solution {
         while !palindromeIndices.isEmpty {
             let from = palindromeIndices[0] - indexDiff - 1
             let to = palindromeIndices[0] + indexDiff + 1
-            longestPalindrome = Array(characters[from..<to])
+            longestPalindrome = Array(characters[from ..< to])
             indexDiff += 1
-            for k in (0..<palindromeIndices.count).reversed() {
+            for k in (0 ..< palindromeIndices.count).reversed() {
                 let centerIndex = palindromeIndices[k]
                 if (
                     centerIndex - indexDiff - 1 < 0 ||

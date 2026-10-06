@@ -1,7 +1,7 @@
 /*
 See https://leetcode.com/problems/string-to-integer-atoi/
 
-String to Integer (atoi)
+8. String to Integer (atoi)
 
 Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer.
 

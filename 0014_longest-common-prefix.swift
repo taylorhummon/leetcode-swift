@@ -1,7 +1,7 @@
 /*
 See https://leetcode.com/problems/longest-common-prefix/
 
-Longest Common Prefix
+14. Longest Common Prefix
 
 Write a function to find the longest common prefix string amongst an array of strings.
 
@@ -44,6 +44,6 @@ class Solution {
             stringA.formIndex(after: &indexA)
             stringB.formIndex(after: &indexB)
         }
-        return String(stringA[stringA.startIndex..<indexA])
+        return String(stringA[stringA.startIndex ..< indexA])
     }
 }

@@ -1,7 +1,7 @@
 /*
 See https://leetcode.com/problems/palindrome-number/
 
-Palindrome Number
+9. Palindrome Number
 
 Given an integer x, return true if x is a palindrome, and false otherwise.
 
@@ -51,7 +51,7 @@ class Solution {
             return false
         }
         let digits = digits(x)
-        for i in 0..<(digits.count / 2) {
+        for i in 0 ..< digits.count / 2 {
             if digits[i] != digits[digits.count - 1 - i] {
                 return false
             }

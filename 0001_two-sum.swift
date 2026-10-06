@@ -1,7 +1,7 @@
 /*
 See https://leetcode.com/problems/two-sum/
 
-Two Sum
+1. Two Sum
 
 You are given an array of integers nums and an integer target, return indices of the two numbers
 such that they add up to target.
