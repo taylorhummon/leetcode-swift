@@ -34,6 +34,49 @@ Constraints:
     1 <= numRows <= 1000
 */
 
+/*
+Idea
+Use modular arithmetic to pick out the characters.
+
+------------------------------------------------------------------
+
+For rowsCount == 3, the first row consists of letters with indices
+  0, 4, 8, 12.
+
+For rowsCount == 4, the first row consists of letters with indices
+  0, 6, 12.
+
+These are 0 working modulo 2 * (rowsCount - 1).
+
+------------------------------------------------------------------
+
+For rowsCount == 3, the last row consists of letters with indices
+  2, 6, 10.
+
+For rowsCount == 4, the last row consists of letters with indices
+  3, 9.
+
+These are rowsCount - 1 working modulo 2 * (rowsCount - 1).
+
+------------------------------------------------------------------
+
+For rowsCount == 3, the middle row consists of letters with indices
+  1, 3, 5, 7, 9, 11.
+
+These are 1 working modulo 2.
+Equivalently, these are +- 1 modulo 4.
+
+------------------------------------------------------------------
+
+For rowsCount == 4, the middle two rows consist of letters with indices
+  1, 5, 7, 11, 13
+and
+  2, 4, 8, 10.
+
+These are +- 1 modulo 6.
+and +- 2 modulo 6.
+*/
+
 class Solution {
     func convert(
         _ string: String,
@@ -45,66 +88,37 @@ class Solution {
         let characters = Array(string)
         let n = characters.count
         var result = [String]()
+
+        // Get character contributions from the first row
         for i in stride(from: 0, to: n, by: 2 * (rowsCount - 1)) {
             result.append(String(characters[i]))
         }
-        for j in 1 ... rowsCount - 2 {
-            var i = 0
-            while true {
-                let k1 = i * 2 * (rowsCount - 1) + j
-                if k1 >= n {
-                    break
+
+        // Get character contributions from the inner rows
+        if rowsCount >= 3 {
+            for j in 1 ... rowsCount - 2 {
+                var i = 0
+                while true {
+                    let k1 = i * 2 * (rowsCount - 1) + j
+                    if k1 >= n {
+                        break
+                    }
+                    result.append(String(characters[k1]))
+                    let k2 = (i + 1) * 2 * (rowsCount - 1) - j
+                    if k2 >= n {
+                        break
+                    }
+                    result.append(String(characters[k2]))
+                    i += 1
                 }
-                result.append(String(characters[k1]))
-                let k2 = (i + 1) * 2 * (rowsCount - 1) - j
-                if k2 >= n {
-                    break
-                }
-                result.append(String(characters[k2]))
-                i += 1
             }
         }
+
+        // Get character contributions from the last row
         for i in stride(from: rowsCount - 1, to: n, by: 2 * (rowsCount - 1)) {
             result.append(String(characters[i]))
         }
+
         return result.joined()
     }
 }
-
-/*
-For rowsCount == 3, the first row consists of letters with indices
-  0, 4, 8, 12.
-
-For rowsCount == 4, the first row consists of letters with indices
-  0, 6, 12.
-
-These are 0 working modulo 2 * (rowsCount - 1).
-
-
-
-For rowsCount == 3, the last row consists of letters with indices
-  2, 6, 10.
-
-For rowsCount == 4, the last row consists of letters with indices
-  3, 9.
-
-These are rowsCount - 1 working modulo 2 * (rowsCount - 1).
-
-
-
-For rowsCount == 3, the middle row consists of letters with indices
-  1, 3, 5, 7, 9, 11.
-
-These are 1 working modulo 2.
-Equivalently, these are +- 1 modulo 4.
-
-
-
-For rowsCount == 4, the middle two rows consist of letters with indices
-  1, 5, 7, 11, 13
-and
-  2, 4, 8, 10.
-
-These are +- 1 modulo 6.
-and +- 2 modulo 6.
-*/

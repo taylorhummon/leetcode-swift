@@ -53,14 +53,18 @@ class Solution {
                 continue
             }
             if let open = openByClosed[character] {
+                // If we don't have the correct bracket to close, we're sunk
                 if stack.isEmpty || stack.popLast() != open {
                     return false
                 }
                 continue
             }
+
             // Found an unknown character
             return false
         }
+
+        // Make sure we've matched all open parens
         return stack.isEmpty
     }
 }

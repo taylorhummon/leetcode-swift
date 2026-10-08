@@ -35,7 +35,7 @@ the first and last letters.
 
 Pursue even and odd lengths of palindromes separately, and compare results.
 
-There are n = len(str) possible middle positions for palindromes of odd length.
+There are n = string.count possible middle positions for palindromes of odd length.
 There are n - 1 possible middle positions for palindromes of even length.
 */
 
@@ -56,19 +56,30 @@ class Solution {
         _ string: String
     ) -> String {
         let characters = Array<Character>(string)
+
+        // Every character is a palindrome of length one
         var palindromeIndices = Array(0 ..< characters.count)
         guard !palindromeIndices.isEmpty else {
             return ""
         }
+
         var longestPalindrome = [Character]()
         var indexDiff = 0
         while !palindromeIndices.isEmpty {
+            // Pick out the first palindrome of size 2 * indexDiff + 1
             let from = palindromeIndices[0] - indexDiff
-            let to = palindromeIndices[0] + indexDiff + 1
-            longestPalindrome = Array(characters[from ..< to])
+            let to = palindromeIndices[0] + indexDiff
+            longestPalindrome = Array(characters[from ... to])
+
+            // Increment indexDiff
             indexDiff += 1
+
+            // We're going to be removing elements from palindromeIndices, so count down
             for k in (0 ..< palindromeIndices.count).reversed() {
+                // For odd palindromes, centerIndex refers to an index of a character
                 let centerIndex = palindromeIndices[k]
+
+                // If centerIndex is no longer a palindrome for this indexDiff, remove it
                 if (
                     centerIndex - indexDiff < 0 ||
                     centerIndex + indexDiff >= characters.count ||
@@ -78,6 +89,8 @@ class Solution {
                 }
             }
         }
+
+        // Return the longest palindrome as a string
         return longestPalindrome.map { String($0) }.joined()
     }
 
@@ -85,30 +98,43 @@ class Solution {
         _ string: String
     ) -> String {
         let characters = Array<Character>(string)
+
+        // A palindrome of length two consists of a doubled character, e.g. "ff"
         var palindromeIndices = Array(
             (1 ..< characters.count).filter { characters[$0 - 1] == characters[$0] }
         )
         guard !palindromeIndices.isEmpty else {
             return ""
         }
+
         var longestPalindrome = [Character]()
-        var indexDiff = 0
+        var indexDiff = 1
         while !palindromeIndices.isEmpty {
-            let from = palindromeIndices[0] - indexDiff - 1
-            let to = palindromeIndices[0] + indexDiff + 1
+            // Pick out the first palindrome of size 2 * indexDiff
+            let from = palindromeIndices[0] - indexDiff
+            let to = palindromeIndices[0] + indexDiff
             longestPalindrome = Array(characters[from ..< to])
+
+            // Increment indexDiff
             indexDiff += 1
+
+            // We're going to be removing elements from palindromeIndices, so count down
             for k in (0 ..< palindromeIndices.count).reversed() {
+                // For even palindromes, centerIndex refers to a position between characters
                 let centerIndex = palindromeIndices[k]
+
+                // If centerIndex is no longer a palindrome for this indexDiff, remove it
                 if (
-                    centerIndex - indexDiff - 1 < 0 ||
-                    centerIndex + indexDiff >= characters.count ||
-                    characters[centerIndex - indexDiff - 1] != characters[centerIndex + indexDiff]
+                    centerIndex - indexDiff < 0 ||
+                    centerIndex + indexDiff - 1 >= characters.count ||
+                    characters[centerIndex - indexDiff] != characters[centerIndex + indexDiff - 1]
                 ) {
                     palindromeIndices.remove(at: k)
                 }
             }
         }
+
+        // Return the longest palindrome as a string
         return longestPalindrome.map { String($0) }.joined()
     }
 }

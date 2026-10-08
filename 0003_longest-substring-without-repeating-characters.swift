@@ -28,10 +28,12 @@ Constraints:
 
 /*
 Idea 1
-Use two indices and a set of previously seen characters.
+Use two indices and a set of previously seen characters. Ideally we could use a data structure that
+was a FIFO queue and had fast element containment lookups. But we'll settle for a set, and manually
+manage the FIFO queue part.
 
 Idea 2
-Use two indices and a dictionary of previously seen characters with their indices.
+Use two indices and a dictionary of previously seen characters that tracks indices.
 */
 
 class Solution {
@@ -49,14 +51,23 @@ class Solution {
         }
         var longestLength = 0
         var left = string.startIndex
+
+        // characters will hold the characters from index left to index right, inclusive
         var characters = Set<Character>()
         for right in string.indices {
-            let character = string[right]
-            while characters.contains(character) {
+            let current: Character = string[right]
+
+            // If we've already seen the current character remove all characters up to and
+            // including the previous instance of current.
+            while characters.contains(current) {
                 characters.remove(string[left])
                 string.formIndex(after: &left)
             }
-            characters.insert(character)
+
+            // Insert current into the set of characters
+            characters.insert(current)
+
+            // See if we have a new longest length of characters
             longestLength = max(longestLength, characters.count)
         }
         return longestLength
@@ -72,14 +83,25 @@ class Solution {
         var left = string.startIndex
         var lastIndexByCharacter = Dictionary<Character, String.Index>()
         for right in string.indices {
-            let character = string[right]
-            if let lastIndex = lastIndexByCharacter[character] {
+            let current: Character = string[right]
+
+            // Check if we've already seen the current character
+            if let lastIndex = lastIndexByCharacter[current] {
+
+                // Don't jump back to consider characters before index left
                 if lastIndex >= left {
+
+                    // Make the new left index point immediately after the last place we saw the current character.
                     left = string.index(after: lastIndex)
                 }
             }
+
+            // See if we have a new longest length of characters
+            // We need to add one because we're considering charactetrs from left to right, inclusive.
             longestLength = max(longestLength, string.distance(from: left, to: right) + 1)
-            lastIndexByCharacter[character] = right
+
+            // Store the index of the current character
+            lastIndexByCharacter[current] = right
         }
         return longestLength
     }

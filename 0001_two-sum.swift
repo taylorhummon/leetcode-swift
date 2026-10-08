@@ -32,23 +32,55 @@ Constraints:
 */
 
 /*
-Idea
-Let's "invert" the array so that it becomes a dictionary, [Int: Index].
+Idea 1
+Keep track of a set of seen integers.
+
+Idea 2
+Instead of using a set, use a dictionary that keeps track of where in the array a number was seen.
 */
 
 class Solution {
     func twoSum(
         _ numbers: [Int],
         _ target: Int
-    ) -> [Int?] { // I'd prefer this to be a tuple type
+    ) -> [Int?] {
+        let (number1, number2) = solution2(numbers, target)
+        // Leetcode wants its answer as an array, not a tuple
+        return [number1, number2]
+    }
+
+    func solution1(
+        _ numbers: [Int],
+        _ target: Int
+    ) -> (Int, Int) {
+        var seen = Set<Int>()
+        for number in numbers {
+            // We'll check if we've seen an integer, complement, satisfying:
+            //   number + compliment = target
+            let compliment = target - number
+            if seen.contains(compliment) {
+                return (
+                    // We'll use firstIndex and lastIndex so that we get different indices in the case that number = compliment.
+                    numbers.firstIndex(of: number)!,
+                    numbers.lastIndex(of: compliment)!
+                )
+            }
+            seen.insert(number)
+        }
+        return (-1, -1)
+    }
+
+    func solution2(
+        _ numbers: [Int],
+        _ target: Int
+    ) -> (Int, Int) {
         var indexByNumber = [Int: Int]()
         for (i, number) in numbers.enumerated() {
             if let j = indexByNumber[target - number] {
-                return [j, i]
+                return (i, j)
             }
             indexByNumber[number] = i
         }
-        // Ugh, leetcode won't let me throw, so I'll return a pair of nils
-        return [nil, nil]
+        return (-1, -1)
     }
 }

@@ -65,12 +65,11 @@ class Solution {
     ) -> Int {
         let characters = Array(s)
         var result = 0
-        let n = characters.count
-        for i in 0 ..< n {
+        for i in 0 ..< characters.count {
             guard let currentValue = valueByCharacter[characters[i]] else {
                 return 0
             }
-            if i + 1 < n {
+            if i + 1 < characters.count {
                 guard let nextValue = valueByCharacter[characters[i + 1]] else {
                     return 0
                 }

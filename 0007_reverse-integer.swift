@@ -45,23 +45,23 @@ class Solution {
         _ x: Int32
     ) -> Int32 {
         if x >= 0 {
-            var digits = toDigits(x)
-            digits.reverse()
-            if let result = fromDigits(digits) {
-                return result
-            } else {
+            let digits = Array(toDigits(x).reversed())
+            guard let result = fromDigits(digits) else {
                 return 0
             }
-        } else if x == -2147483648 {
+            return result
+        }
+        // Use a special case for Int32.min because abs(Int32.min) = Int32.min + 1
+        else if x == -2147483648 {
+            // -8463847412 is out of range
             return 0
-        } else {
-            var digits = toDigits(-x)
-            digits.reverse()
-            if let result = fromDigits(digits) {
-                return -result
-            } else {
+        }
+        else {
+            let digits = Array(toDigits(-x).reversed())
+            guard let result = fromDigits(digits) else {
                 return 0
             }
+            return -result
         }
     }
 
@@ -70,6 +70,7 @@ class Solution {
         _ x: Int32
     ) -> [Int32] {
         guard x > 0 else {
+            // WARN: This is wrong for x < 0.
             return [0]
         }
         var x = x
@@ -88,11 +89,15 @@ class Solution {
         var digits = digits
         var result = Int32(0)
         while !digits.isEmpty {
+            let digit = digits.popLast()!
+
+            // Check if multiplying result by ten would overflow
             guard result <= topOverTen else {
                 return nil
             }
-            let digit = digits.popLast()!
             result *= 10
+
+            // Check if adding digit to result would overflow
             guard result <= Int32.max - digit else {
                 return nil
             }
@@ -105,19 +110,21 @@ class Solution {
         _ x: Int32
     ) -> Int32 {
         if x >= 0 {
-            if let result = solution2Helper(x) {
-                return result
-            } else {
+            guard let result = solution2Helper(x) else {
                 return 0
             }
-        } else if x == -2147483648 {
+            return result
+        }
+        // Use a special case for Int32.min because abs(Int32.min) = Int32.min + 1
+        else if x == -2147483648 {
+            // -8463847412 is out of range
             return 0
-        } else {
-            if let result = solution2Helper(-x) {
-                return -result
-            } else {
+        }
+        else {
+            guard let result = solution2Helper(-x) else {
                 return 0
             }
+            return -result
         }
     }
 
@@ -126,17 +133,22 @@ class Solution {
         _ x: Int32
     ) -> Int32? {
         let topOverTen = Int32.max / 10
-        guard x >= 0 else {
+        guard x > 0 else {
+            // WARN: This is wrong for x < 0.
             return 0
         }
         var x = x
         var result = Int32(0)
         while x > 0 {
+            let digit = x % 10
+
+            // Check if multiplying result by ten would overflow
             guard result <= topOverTen else {
                 return nil
             }
-            let digit = x % 10
             result *= 10
+
+            // Check if adding digit to result would overflow
             guard result <= Int32.max - digit else {
                 return nil
             }

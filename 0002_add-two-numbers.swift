@@ -39,17 +39,6 @@ end of the result list. We'll need to mutate the end of the result list whenever
 we want to chain on another digit.
 */
 
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     public var val: Int
- *     public var next: ListNode?
- *     public init() { self.val = 0; self.next = nil; }
- *     public init(_ val: Int) { self.val = val; self.next = nil; }
- *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
- * }
- */
-
 class Solution {
     func addTwoNumbers(
         _ list1: ListNode?,
@@ -63,49 +52,66 @@ class Solution {
         _ list2: ListNode?,
         carried: Int = 0
     ) -> ListNode? {
-        let value1 = list1?.val ?? 0
-        let value2 = list2?.val ?? 0
-        let possiblyTooLarge = value1 + value2 + carried
-        let value = possiblyTooLarge >= 10 ? possiblyTooLarge - 10 : possiblyTooLarge
-        let carry = possiblyTooLarge >= 10 ? 1 : 0
+        let digit1 = list1?.val ?? 0
+        let digit2 = list2?.val ?? 0
+        let total = digit1 + digit2 + carried
+
+        // We'll need a carry if total >= 10
+        let digit = total >= 10 ? total - 10 : total
+        let carry = total >= 10 ? 1 : 0
+
+        // Handle cases when both lists are empty
         if list1 == nil && list2 == nil {
             if carry == 1 {
-                return ListNode(value, ListNode(1, nil))
-            } else if value > 0 {
-                return ListNode(value, nil)
-            } else {
+                return ListNode(digit, ListNode(1, nil))
+            }
+            else if digit > 0 {
+                return ListNode(digit, nil)
+            }
+            else {
                 return nil
             }
         }
-        return ListNode(value, solution1(list1?.next, list2?.next, carried: carry))
+
+        // Otherwise, recurse
+        return ListNode(digit, solution1(list1?.next, list2?.next, carried: carry))
     }
 
     func solution2(
         _ list1: ListNode?,
         _ list2: ListNode?
     ) -> ListNode? {
-        if list1 == nil && list2 == nil {
+        guard list1 != nil || list2 != nil else {
             return ListNode(0, nil)
         }
         var list1 = list1
         var list2 = list2
         var carry: Int = 0
+
         // Using this resultHolder helps us DRY the loop.
         // We'll modify resultHolder.next using lastResultNode.
         let resultHolder = ListNode(-1, nil)
-        var lastResultNode = resultHolder
+        var lastListNodeOfResult = resultHolder
         while list1 != nil || list2 != nil || carry != 0 {
-            let value1 = list1?.val ?? 0
-            let value2 = list2?.val ?? 0
-            let possiblyTooLarge = value1 + value2 + carry
-            let value = possiblyTooLarge >= 10 ? possiblyTooLarge - 10 : possiblyTooLarge
-            carry = possiblyTooLarge >= 10 ? 1 : 0
-            let newResultNode = ListNode(value, nil)
-            lastResultNode.next = newResultNode
-            lastResultNode = newResultNode
+            let digit1 = list1?.val ?? 0
+            let digit2 = list2?.val ?? 0
+            let total = digit1 + digit2 + carry
+            let digit = total >= 10 ? total - 10 : total
+            carry = total >= 10 ? 1 : 0
+
+            // Make a new list node and stick the new list node on to the end of the result
+            let listNode = ListNode(digit, nil)
+            lastListNodeOfResult.next = listNode
+
+            // Advance the lastListNodeOfResult
+            lastListNodeOfResult = lastListNodeOfResult.next!
+
+            // Advance the lists
             list1 = list1?.next
             list2 = list2?.next
         }
+
+        // Return the result
         return resultHolder.next
     }
 }

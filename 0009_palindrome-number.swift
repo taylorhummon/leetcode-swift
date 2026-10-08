@@ -27,7 +27,7 @@ Constraints:
 /*
 Idea 1
 Generate the digits as an array
-Check that the first digit matches the last, second matches penultimate, ... up to the middle
+Check that the first digit matches the last, second matches penultimate, ... up to the middle.
 
 Idea 2
 Build the reverse number with modulo and integer division without calculating an
@@ -51,6 +51,9 @@ class Solution {
             return false
         }
         let digits = digits(x)
+
+        // We can use integer division here because we don't need to check the middle
+        // character in an odd length palindrome.
         for i in 0 ..< digits.count / 2 {
             if digits[i] != digits[digits.count - 1 - i] {
                 return false
@@ -64,6 +67,7 @@ class Solution {
         _ x: Int
     ) -> [Int] {
         guard x > 0 else {
+            // WARN: This is wrong for negative x
             return [0]
         }
         var x = x
@@ -98,7 +102,7 @@ class Solution {
         var left = string.startIndex
         var right = string.index(string.endIndex, offsetBy: -1)
         while left < right {
-            if string[left] != string[right] {
+            guard string[left] == string[right] else {
                 return false
             }
             string.formIndex(after: &left)

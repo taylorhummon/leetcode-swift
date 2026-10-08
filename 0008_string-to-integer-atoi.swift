@@ -38,16 +38,21 @@ class Solution {
     func myAtoi(
         _ string: String
     ) -> Int {
-        return Int(atoi(string))
+        return Int(solution(string))
     }
 
-    func atoi(
+    func solution(
         _ string: String
     ) -> Int32 {
+        // Trim whitespace
         var characters = Array(string.trimmingCharacters(in: .whitespaces))
+
+        // Stop if we have nothing to process
         guard !characters.isEmpty else {
             return 0
         }
+
+        // Check for positive and negative signs
         var isNegative = false
         if characters[0] == "+" {
             characters.removeFirst()
@@ -55,6 +60,8 @@ class Solution {
             characters.removeFirst()
             isNegative = true
         }
+
+        // Read digits
         var digits = [Int32]()
         for character in characters {
             guard let digit = digitByString[character] else {
@@ -62,16 +69,23 @@ class Solution {
             }
             digits.append(digit)
         }
+
+        // Check for Int32.min
         if isNegative && digits == [2, 1, 4, 7, 4, 8, 3, 6, 4, 8] {
             return Int32.min
         }
+
+        // Handle negative numbers
         if isNegative {
             if let positiveResult = fromDigits(digits) {
                 return -positiveResult
             } else {
                 return Int32.min
             }
-        } else {
+        }
+
+        // Handle positive numbers
+        else {
             if let result = fromDigits(digits) {
                 return result
             } else {
@@ -85,10 +99,13 @@ class Solution {
     ) -> Int32? {
         var result = Int32(0)
         for digit in digits {
+            // Check if multiplying result by ten would overflow
             guard result <= Int32.max / 10 else {
                 return nil
             }
             result *= 10
+
+            // Check if adding digit to result would overflow
             guard result <= Int32.max - digit else {
                 return nil
             }

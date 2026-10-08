@@ -64,17 +64,24 @@ class Solution {
         let beforeHead = ListNode(0, head)
         var left: ListNode? = beforeHead
         var right: ListNode? = beforeHead
+
+        // Advance right n times
         for _ in 0 ..< n {
             guard let unwrapped = right else {
                 return nil
             }
             right = unwrapped.next
         }
+
+        // Advance left and right until right is on the last non-nil element
         while right?.next != nil {
             right = right!.next
             left = left!.next
         }
+
+        // Excise the node at left.next
         left!.next = left!.next!.next
+
         return beforeHead.next
     }
 }

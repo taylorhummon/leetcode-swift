@@ -65,6 +65,8 @@ class Solution {
                     left += 1
                 }
             }
+            // We want both this "if" statement and the previous "if" statement to execute
+            // when leftHeight == rightHeight
             if leftHeight >= rightHeight {
                 while left < right && heights[right] <= rightHeight {
                     right -= 1

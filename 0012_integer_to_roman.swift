@@ -37,6 +37,7 @@ Constraints:
 */
 
 class Solution {
+    // It is important that this array is sorted from largest to smallest value.
     let stringByValue: [(Int, String)] = [
         (1000, "M"),
         (900, "CM"),
