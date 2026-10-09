@@ -54,6 +54,7 @@ class Solution {
     ) -> Void {
         // where we're reading from in numbers1
         var i = m - 1
+
         // where we're reading from in numbers2
         var j = n - 1
 

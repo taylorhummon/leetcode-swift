@@ -47,7 +47,8 @@ class Solution {
         let evenPalindrome = getLongestEvenLengthPalindrome(string)
         if oddPalindrome.count > evenPalindrome.count {
             return oddPalindrome
-        } else {
+        }
+        else {
             return evenPalindrome
         }
     }

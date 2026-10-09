@@ -104,7 +104,7 @@ class Solution {
             lastListNodeOfResult.next = listNode
 
             // Advance the lastListNodeOfResult
-            lastListNodeOfResult = lastListNodeOfResult.next!
+            lastListNodeOfResult = listNode
 
             // Advance the lists
             list1 = list1?.next

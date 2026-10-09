@@ -44,14 +44,17 @@ Idea 1
 4. If reducing one of the linked lists made it empty, remove it from consideration.
 5. Repeat from step 2.
 
-If we want to cut down on the number of checks for the minimum, we could store the
-heads of the linked lists in a sorted way.
-A priority queue is probably ideal.
-Maybe a simpler way is to store the heads of the linked list sorted by descending
-node value. That way it's cheap to pop one off. Inserting is linear time expensive.
+To cut down on the number of checks for the minimum, we could store the heads of the
+linked lists in a min priority queue. Unfortunately, I can't import a min priority
+queue data structure in leetcode (and I'd rather not implement one) so, I'm just
+going to store linked list heads in a sorted array. This way:
+- It's cheap to pop off the list with minimum head.
+- It's cheap to decide where to store a list.
+Inserting is a little expensive if the number of lists is large.
 
 Idea 2
 Repeatedly merge pairs of lists until there's only one left.
+Not yet implemented.
 */
 
 /**
@@ -69,57 +72,79 @@ class Solution {
     func mergeKLists(
         _ lists: [ListNode?]
     ) -> ListNode? {
-        if lists.isEmpty {
+        return solution1(lists)
+    }
+
+    func solution1(
+        _ lists: [ListNode?]
+    ) -> ListNode? {
+        guard !lists.isEmpty else {
             return nil
         }
 
         let dummy = ListNode()
         var latest = dummy
 
+        // Remove nil lists
         var lists: [ListNode] = lists.compactMap { $0 }
-        // TODO: Instead of using a sorted list, use a min priority queue.
-        // The costly thing is the lists.insert() statements which are O(n).
+
+        // Store the lists in descending order by val.
         lists.sort(using: KeyPathComparator(\.val, order: .reverse))
         while !lists.isEmpty {
-            // The following should always succeed because lists is non-empty
+            // The following always succeeds because lists is non-empty
             let list = lists.popLast()!
 
             // Create a list node
             let listNode = ListNode(list.val)
+
             // Store the new list node
             latest.next = listNode
+
             // Advance latest to point at the new list node
             latest = listNode
 
-            guard let shorterList = list.next else {
-                continue
-            }
-            // Put shorterList back in lists in sorted position.
-            if lists.isEmpty {
-                lists.append(shorterList)
-            } else if shorterList.val >= lists[0].val {
-                lists.insert(shorterList, at: 0)
-            } else if shorterList.val <= lists[lists.count - 1].val {
-                lists.append(shorterList)
-            } else { // We're now finally in a position to use bisect search!
-                let target = shorterList.val
-                var left = 0
-                var right = lists.count - 1
-                while left + 1 < right {
-                    let middle = (left + right) / 2
-                    if lists[middle].val <= target {
-                        right = middle
-                    } else {
-                        left = middle
-                    }
-                }
-                if lists[left].val == target {
-                    lists.insert(shorterList, at: left)
-                } else {
-                    lists.insert(shorterList, at: right)
-                }
+            if let shorterList = list.next {
+                insertListIntoSortedLists(list: shorterList, sortedLists: &lists)
             }
         }
         return dummy.next
+    }
+
+    func insertListIntoSortedLists(
+        list: ListNode,
+        sortedLists: inout [ListNode]
+    ) -> Void {
+        if sortedLists.isEmpty {
+            sortedLists.append(list)
+        }
+        // Should the list be inserted at the front of sortedLists?
+        else if list.val >= sortedLists[0].val {
+            sortedLists.insert(list, at: 0)
+        }
+        // Should the list be inserted at the back of sortedLists?
+        else if list.val <= sortedLists[sortedLists.count - 1].val {
+            sortedLists.append(list)
+        }
+        // Use bisect search to find where to insert list into sortedList.
+        else {
+            let target = list.val
+            var left = 0
+            var right = sortedLists.count - 1
+            while left + 1 < right {
+                let middle = (left + right) / 2
+                if sortedLists[middle].val <= target {
+                    right = middle
+                }
+                else {
+                    left = middle
+                }
+            }
+            if sortedLists[left].val == target {
+                sortedLists.insert(list, at: left)
+            }
+            else {
+                sortedLists.insert(list, at: right)
+            }
+        }
     }
 }

@@ -49,6 +49,7 @@ Iterative using a stack.
  */
 
 class Solution {
+    // Leetcode named this. I'd prefer depthFirstValues().
     func inorderTraversal(
         _ root: TreeNode?
     ) -> [Int] {
@@ -103,7 +104,8 @@ class Solution {
                 if node.right != nil {
                     return node.right
                 }
-            } else {
+            }
+            else {
                 return nil
             }
         }

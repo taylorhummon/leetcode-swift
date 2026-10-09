@@ -74,27 +74,34 @@ class Solution {
 
         // We can offset by -1 since we've ensured the string is non-empty.
         var i = string.index(string.endIndex, offsetBy: -1)
+
         // Walk i backwards across spaces, making sure not to walk off the string.
         while i > string.startIndex && string[i] == " " {
             string.formIndex(before: &i)
         }
+
         // If the string was all spaces, return an absurd value, -1.
         if i == string.startIndex && string[i] == " " {
             return -1
         }
 
         var j = i
+
         // Walk j backwards across letters, making sure not to walk off the string.
         while j > string.startIndex && string[j] != " " {
             string.formIndex(before: &j)
         }
-        // If we hit a space, return the distance.
-        // e.g. "dog says woof" or " meow"
-        // If we didn't hit a space, return the distance plus one.
-        // e.g. "cat" has i = 2 and j = 0.
+
+        /*
+        If we hit a space, return the distance.
+        e.g. "dog says woof" or " meow"
+        If we didn't hit a space, return the distance plus one.
+        e.g. "cat" has i = 2 and j = 0.
+        */
         if string[j] == " " {
             return string.distance(from: j, to: i)
-        } else {
+        }
+        else {
             return string.distance(from: j, to: i) + 1
         }
     }

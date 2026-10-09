@@ -39,6 +39,14 @@ Constraints:
  * }
  */
 
+/*
+Idea 1
+Recursion.
+
+Idea 2
+Iterative.
+*/
+
 class Solution {
     func mergeTwoLists(
         _ list1: ListNode?,
@@ -60,7 +68,8 @@ class Solution {
         if list1.val <= list2.val {
             list1.next = solution1(list1.next, list2)
             return list1
-        } else {
+        }
+        else {
             list2.next = solution1(list1, list2.next)
             return list2
         }
@@ -86,7 +95,8 @@ class Solution {
             resultLast = list1
             remaining1 = list1.next
             remaining2 = list2
-        } else {
+        }
+        else {
             resultFirst = list2
             resultLast = list2
             remaining1 = list1
@@ -109,7 +119,8 @@ class Solution {
                 resultLast.next = node1
                 resultLast = node1
                 resultLast.next = nil
-            } else {
+            }
+            else {
                 remaining2 = node2.next
                 // Advance resultLast to be node2
                 resultLast.next = node2

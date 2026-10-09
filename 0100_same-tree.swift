@@ -47,12 +47,12 @@ class Solution {
         if p == nil && q == nil {
             return true
         }
-        if p == nil || q == nil {
+        guard let p = p else {
             return false
         }
-        // We can unwrap p and q because we just ensured they're not nil.
-        let p = p!
-        let q = q!
+        guard let q = q else {
+            return false
+        }
         if p.val != q.val {
             return false
         }

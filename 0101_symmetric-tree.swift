@@ -50,12 +50,12 @@ class Solution {
         if treeA == nil && treeB == nil {
             return true
         }
-        if treeA == nil || treeB == nil {
+        guard let treeA = treeA else {
             return false
         }
-        // We can unwrap treeA and treeB now because we've just ensured they're not nil.
-        let treeA = treeA!
-        let treeB = treeB!
+        guard let treeB = treeB else {
+            return false
+        }
         if treeA.val != treeB.val {
             return false
         }

@@ -31,15 +31,25 @@ Constraints:
     nums is sorted in non-decreasing order.
 */
 
+/*
+Idea
+Use two indices, on where we'll write to and one (ahead) where we'll read from.
+*/
+
 class Solution {
     func removeDuplicates(
         _ numbers: inout [Int]
     ) -> Int {
         let n = numbers.count
-        var i = 0   // i is the index where we're going to write a number
-        var j = 0   // j is the index where we're reading from
+
+        // i is the index where we're going to write a number
+        var i = 0
+
+        // j is the index where we're reading from
+        var j = 0
         while j < n {
             numbers[i] = numbers[j]
+            j += 1
             while j < n && numbers[j] == numbers[i] {
                 j += 1
             }

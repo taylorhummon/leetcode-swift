@@ -28,16 +28,21 @@ Example 2:
     It does not matter what you leave beyond the returned k (hence they are underscores).
 */
 
+/*
+Idea
+Keep two indices for numbers, one where we write to and one (ahead) wheere we read from.
+Skip writing any instances of value.
+*/
+
 class Solution {
     func removeElement(
         _ numbers: inout [Int],
         _ value: Int
     ) -> Int {
-        guard !numbers.isEmpty else {
-            return 0
-        }
-        var i = 0   // where we write to in numbers
-        var j = 0   // where we read from in numbers
+        // where we write to in numbers
+        var i = 0
+        // where we read from in numbers
+        var j = 0
         let n = numbers.count
         while j < n {
             while j < n && numbers[j] == value {

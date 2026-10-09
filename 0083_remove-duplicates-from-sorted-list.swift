@@ -57,7 +57,8 @@ class Solution {
         }
         if next.val == head.val {
             return solution1(next)
-        } else {
+        }
+        else {
             return ListNode(head.val, solution1(next))
         }
     }
@@ -83,10 +84,13 @@ class Solution {
         var lastWrittenNode: ListNode = dummy
         var readNode = head
         while readNode != nil {
+            // This is safe because we just ensured readNode is not nil
             let value = readNode!.val
-            lastWrittenNode.next = ListNode(value, nil)
-            lastWrittenNode = lastWrittenNode.next!
+            let newLastNode = ListNode(value, nil)
+            lastWrittenNode.next = newLastNode
+            lastWrittenNode = newLastNode
             while readNode != nil && readNode!.val == value {
+                // This is safe because we just ensured readNode is not nil
                 readNode = readNode!.next
             }
         }

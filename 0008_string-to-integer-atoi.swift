@@ -56,7 +56,8 @@ class Solution {
         var isNegative = false
         if characters[0] == "+" {
             characters.removeFirst()
-        } else if characters[0] == "-" {
+        }
+        else if characters[0] == "-" {
             characters.removeFirst()
             isNegative = true
         }
@@ -79,7 +80,8 @@ class Solution {
         if isNegative {
             if let positiveResult = fromDigits(digits) {
                 return -positiveResult
-            } else {
+            }
+            else {
                 return Int32.min
             }
         }
@@ -88,7 +90,8 @@ class Solution {
         else {
             if let result = fromDigits(digits) {
                 return result
-            } else {
+            }
+            else {
                 return Int32.max
             }
         }

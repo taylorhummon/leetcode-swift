@@ -35,6 +35,7 @@ Similar to idea 1, but avoid using a digits array.
 */
 
 class Solution {
+    // Leetcode named this. I think it would be more swifty to call it reversed().
     func reverse(
         _ x: Int
     ) -> Int {
@@ -89,6 +90,7 @@ class Solution {
         var digits = digits
         var result = Int32(0)
         while !digits.isEmpty {
+            // We've ensured digits is not empty, so we can pop a digit.
             let digit = digits.popLast()!
 
             // Check if multiplying result by ten would overflow

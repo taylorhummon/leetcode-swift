@@ -17,7 +17,17 @@ Constraints:
     1 <= n <= 8
 */
 
+/*
+Idea
+Recursion working from right-to-left.
+
+Key fact: When building right-to-left we can never have more open parentheses than closed parentheses.
+In other words:
+    remainingOpen >= remainingClosed
+*/
+
 class Solution {
+    // Leetcode chose this function name -- I think generateParentheses() would be better.
     func generateParenthesis(
         _ n: Int
     ) -> [String] {
@@ -28,28 +38,35 @@ class Solution {
         _ remainingOpen: Int,
         _ remainingClosed: Int
     ) -> [String] {
-        if remainingOpen == 0 {
+        if remainingOpen == 0 && remainingClosed == 0 {
             return [""]
-        } else if remainingClosed == 0 {
-            return generateAppendingOpenParen(remainingOpen, remainingClosed)
-        } else if remainingOpen == remainingClosed {
-            return generateAppendingClosedParen(remainingOpen, remainingClosed)
-        } else {
+        }
+        else if remainingOpen > 0 && remainingClosed == 0 {
+            return generateAppendingOpenParenthesis(remainingOpen, remainingClosed)
+        }
+        else if remainingOpen == remainingClosed {
+            return generateAppendingClosedParenthesis(remainingOpen, remainingClosed)
+        }
+        else if remainingOpen > remainingClosed {
             return (
-                generateAppendingClosedParen(remainingOpen, remainingClosed) +
-                generateAppendingOpenParen(remainingOpen, remainingClosed)
+                generateAppendingClosedParenthesis(remainingOpen, remainingClosed) +
+                generateAppendingOpenParenthesis(remainingOpen, remainingClosed)
             )
+        }
+        // This case should never happen.
+        else {
+            return []
         }
     }
 
-    func generateAppendingClosedParen(
+    func generateAppendingClosedParenthesis(
         _ remainingOpen: Int,
         _ remainingClosed: Int
     ) -> [String] {
         return generateWith(remainingOpen, remainingClosed - 1).map { $0 + ")" }
     }
 
-    func generateAppendingOpenParen(
+    func generateAppendingOpenParenthesis(
         _ remainingOpen: Int,
         _ remainingClosed: Int
     ) -> [String] {

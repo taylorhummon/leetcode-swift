@@ -66,6 +66,7 @@ class Solution {
         var right: ListNode? = beforeHead
 
         // Advance right n times
+        // Since we ensured n >= 1, this will make right at least one ahead of left.
         for _ in 0 ..< n {
             guard let unwrapped = right else {
                 return nil
@@ -75,11 +76,15 @@ class Solution {
 
         // Advance left and right until right is on the last non-nil element
         while right?.next != nil {
+            // Right cannot be nil because right?.next was not nil
             right = right!.next
+
+            // Left cannot be nil because right is ahead of left
             left = left!.next
         }
 
         // Excise the node at left.next
+        // Left and left.next cannot be nil because right sits at least one ahead of left
         left!.next = left!.next!.next
 
         return beforeHead.next

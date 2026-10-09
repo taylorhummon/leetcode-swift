@@ -34,6 +34,11 @@ Constraints:
     digits does not contain any leading 0's.
 */
 
+/*
+Idea
+Reverse the digits so we can work left-to-right.
+*/
+
 class Solution {
     func plusOne(
         _ digits: [Int]
@@ -46,16 +51,17 @@ class Solution {
         digits[0] += 1
         let n = digits.count
         for i in 0 ..< n {
-            print(i)
-            guard digits[i] == 10 else {
+            if digits[i] <= 9 {
                 break
             }
             digits[i] = 0
-            guard i < n - 1 else {
+            if i == n - 1 {
                 digits.append(1)
                 break
             }
-            digits[i + 1] += 1
+            else {
+                digits[i + 1] += 1
+            }
         }
         digits.reverse()
         return digits

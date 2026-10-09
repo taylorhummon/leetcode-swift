@@ -44,9 +44,11 @@ class Solution {
             let middleSquared = middle * middle
             if middleSquared < n {
                 left = middle
-            } else if middleSquared > n {
+            }
+            else if middleSquared > n {
                 right = middle
-            } else {
+            }
+            else {
                 return middle
             }
         }

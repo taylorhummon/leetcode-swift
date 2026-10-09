@@ -31,6 +31,7 @@ Brute force using string indices.
 */
 
 class Solution {
+    // Leetcode named this. I'd prefer substringIndex().
     func strStr(
         _ haystack: String,
         _ needle: String
